@@ -29,11 +29,22 @@ export default function Board() {
             console.log(response.data);
         });
     }
+
+    const logoutFun = () => {
+        console.log("Logout clicked");
+
+        axios.post("http://localhost:5000/api/auth/logout", {
+            submit: "Logout"
+        }).then((response) => {
+            console.log(response.data);
+        });
+    }
     
     return (
         <>
             <Square value="Login" onSquareClick={loginFun}/>
             <Square value="Fetch" onSquareClick={secretInfo}/>
+            <Square value="Logout" onSquareClick={logoutFun}/>
         </>
     ) 
         

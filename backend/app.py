@@ -4,7 +4,7 @@ from flask import Flask, render_template_string
 from flask_security import Security, current_user, auth_required, hash_password, \
      SQLAlchemySessionUserDatastore
 from database import init_db, db_session
-from models import User, Role
+from models.user import User, Role
 from passlib.totp import generate_secret
 from apiflask import APIFlask  # step one
 from flask_wtf.csrf import CSRFProtect

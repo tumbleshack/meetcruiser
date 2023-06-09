@@ -1,3 +1,17 @@
+# Configuring Flask-Security-Too for single page web application (React)
+# For more details, see:
+# https://flask-security-too.readthedocs.io/en/stable/spa.html
+# https://flask-security-too.readthedocs.io/en/stable/patterns.html#csrf
+SECURITY_CSRF_COOKIE_NAME = 'XSRF-TOKEN'
+WTF_CSRF_TIME_LIMIT = None
+WTF_CSRF_CHECK_DEFAULT = False
+SECURITY_CSRF_PROTECT_MECHANISMS = ['session']
+SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS = True
+SECURITY_FLASH_MESSAGES = False
+SECURITY_URL_PREFIX = '/api/auth'
+
+
+# Enabling login features
 SECURITY_REGISTERABLE = True
 SECURITY_CHANGEABLE = True
 SECURITY_RECOVERABLE = True

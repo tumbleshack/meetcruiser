@@ -6,9 +6,11 @@ from flask_security import Security, current_user, auth_required, hash_password,
 from database import init_db, db_session
 from models import User, Role
 from passlib.totp import generate_secret
+from apiflask import APIFlask  # step one
+from flask_wtf.csrf import CSRFProtect
 
 # Create app
-app = Flask(__name__, instance_relative_config=True)
+app = APIFlask(__name__, instance_relative_config=True)
 
 # Load the default configuration
 app.config.from_object('config.default')
@@ -20,6 +22,10 @@ app.config.from_pyfile('config.py')
 # Variables defined here will override those in the default configuration
 env_config_module = os.environ.get('APP_CONFIG_FILE', 'config.development')
 app.config.from_object(env_config_module)
+
+# Enable CRSF protection on flask security too
+# https://flask-security-too.readthedocs.io/en/stable/patterns.html#csrf
+csrf = CSRFProtect(app)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemySessionUserDatastore(db_session, User, Role)

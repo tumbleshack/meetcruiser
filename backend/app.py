@@ -8,6 +8,7 @@ from models.user import User, Role
 from passlib.totp import generate_secret
 from apiflask import APIFlask  # step one
 from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS
 
 # Create app
 app = APIFlask(__name__, instance_relative_config=True)
@@ -16,7 +17,7 @@ app = APIFlask(__name__, instance_relative_config=True)
 app.config.from_object('config.default')
 
 # Load the configuration from the instance folder
-app.config.from_pyfile('config.py')
+app.config.from_object('instance.config')
 
 # Load the file specified by the APP_CONFIG_FILE environment variable
 # Variables defined here will override those in the default configuration
@@ -27,6 +28,17 @@ app.config.from_object(env_config_module)
 # https://flask-security-too.readthedocs.io/en/stable/patterns.html#csrf
 csrf = CSRFProtect(app)
 
+# Allow request from frontend domains
+if (app.config['CORS_ORIGINS']):
+    CORS(
+        app,
+        supports_credentials=True,  # needed for cross domain cookie support
+        resources="/*",
+        allow_headers="*",
+        origins=app.config['CORS_ORIGINS'],
+        expose_headers="Authorization,Content-Type,Authentication-Token,XSRF-TOKEN",
+    )
+
 # Setup Flask-Security
 user_datastore = SQLAlchemySessionUserDatastore(db_session, User, Role)
 app.security = Security(app, user_datastore)
@@ -36,6 +48,11 @@ app.security = Security(app, user_datastore)
 @auth_required()
 def home():
     return render_template_string('Hello {{email}} !', email=current_user.email)
+
+@app.route("/secret")
+@auth_required()
+def data():
+    return "secret data"
 
 # one time setup
 with app.app_context():

@@ -19,9 +19,9 @@ app.config.from_object('config.default')
 # Load the configuration from the instance folder
 app.config.from_object('instance.config')
 
-# Load the file specified by the APP_CONFIG_FILE environment variable
+# Load the file specified by the APP_RUN_CONFIG environment variable
 # Variables defined here will override those in the default configuration
-env_config_module = os.environ.get('APP_CONFIG_FILE', 'config.development')
+env_config_module = os.environ.get('APP_RUN_CONFIG', 'config.development')
 app.config.from_object(env_config_module)
 
 # Enable CRSF protection on flask security too

@@ -9,9 +9,11 @@ from passlib.totp import generate_secret
 from apiflask import APIFlask  # step one
 from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
+from flask_socketio import SocketIO
 
 # Create app
 app = APIFlask(__name__, instance_relative_config=True)
+socket_app = SocketIO(app)
 
 # Load the default configuration
 app.config.from_object('config.default')
@@ -68,4 +70,4 @@ def shutdown_session(exception=None):
 
 if __name__ == '__main__':
     # run application (can also use flask run)
-    app.run()
+    socket_app.run(app)

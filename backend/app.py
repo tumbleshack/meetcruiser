@@ -9,11 +9,10 @@ from passlib.totp import generate_secret
 from apiflask import APIFlask  # step one
 from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, Namespace, emit
 
 # Create app
 app = APIFlask(__name__, instance_relative_config=True)
-socket_app = SocketIO(app)
 
 # Load the default configuration
 app.config.from_object('config.default')
@@ -29,6 +28,7 @@ app.config.from_object(env_config_module)
 # Enable CRSF protection on flask security too
 # https://flask-security-too.readthedocs.io/en/stable/patterns.html#csrf
 csrf = CSRFProtect(app)
+socket_app = SocketIO(app, cors_allowed_origins=app.config['CORS_ORIGINS'], logger=True)
 
 # Allow request from frontend domains
 if (app.config['CORS_ORIGINS']):
@@ -55,6 +55,21 @@ def home():
 @auth_required()
 def data():
     return "secret data"
+
+class SecretNamespace(Namespace):
+    def on_connect(self):
+        print("connected!")
+        pass
+
+    def on_disconnect(self):
+        print("disconnected!")
+        pass
+
+    def on_my_event(self, data):
+        print("my_event", data)
+        emit('my_response', {"data": "server response"})
+
+socket_app.on_namespace(SecretNamespace('/test'))
 
 # one time setup
 with app.app_context():

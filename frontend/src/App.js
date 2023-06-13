@@ -1,4 +1,6 @@
 import axios from "axios";
+import { socket } from './socket.js';
+import { useEffect } from 'react';
 
 function Square({ value, onSquareClick }) {
     return (
@@ -39,12 +41,44 @@ export default function Board() {
             console.log(response.data);
         });
     }
+
+    const socketConnect = () => {
+        console.log("Connect clicked");
+        socket.connect();
+    }
+
+    const socketDisconnect = () => {
+        console.log("Disconnect clicked");
+        socket.disconnect();
+    }
+
+    const emitEvent = () => {
+        console.log("Emit clicked");
+        socket.emit("my_event", "Hello World");
+    }
+
+    useEffect(() => {
+        console.log("Setting up socket listener");
+        socket.on("my_response", (data) => {
+            console.log("Received data from server");
+            console.log(data);
+        });
+
+        return () => {
+            console.log("Cleaning up socket listener");
+            socket.off("my_response");
+        }
+
+    }, [socket]);
     
     return (
         <>
             <Square value="Login" onSquareClick={loginFun}/>
-            <Square value="Fetch" onSquareClick={secretInfo}/>
+            <Square value="FetchApi" onSquareClick={secretInfo}/>
             <Square value="Logout" onSquareClick={logoutFun}/>
+            <Square value="ConnectSocket" onSquareClick={socketConnect}/>
+            <Square value="EmitSocketEvent" onSquareClick={emitEvent}/>
+            <Square value="DisconnectSocket" onSquareClick={socketDisconnect}/>
         </>
     ) 
         

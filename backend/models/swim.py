@@ -27,7 +27,31 @@ class UserTeamRole(Base, TimestampMixin):
 class Meet(Base, TimestampMixin):
     __tablename__ = 'meet_table'
     id = mapped_column(Integer, primary_key=True)
+    current_start = mapped_column(Integer, nullable=False, default=0)
     name = mapped_column(String(255), unique=True, nullable=False)
     description = mapped_column(String(255), nullable=True)
     host_team_id: Mapped[Optional[int]] = mapped_column(ForeignKey("team_table.id"))
     host_team: Mapped[Optional[Team]] = relationship(back_populates="host_meets")
+
+class Start(Base, TimestampMixin):
+    __tablename__ = 'start_table'
+    id = mapped_column(Integer, primary_key=True)
+    number = mapped_column(Integer, nullable=False)
+    meet_id: Mapped[int] = mapped_column(ForeignKey("meet_table.id"), nullable=False)
+
+class Event(Base, TimestampMixin):
+    __tablename__ = 'event_table'
+    id = mapped_column(Integer, primary_key=True)
+    number = mapped_column(Integer, nullable=False)
+    # Although techincally redunant, Meet ID is non-nullable to ensure each entry is uniquely associated with a meet
+    meet_id: Mapped[int] = mapped_column(ForeignKey("meet_table.id"), nullable=False)
+
+class Heat(Base, TimestampMixin):
+    __tablename__ = 'heat_table'
+    id = mapped_column(Integer, primary_key=True)
+    number = mapped_column(Integer, nullable=False)
+    start_id: Mapped[int] = mapped_column(ForeignKey("start_table.id"), nullable=False)
+    event_id: Mapped[int] = mapped_column(ForeignKey("event_table.id"), nullable=False)
+
+
+    

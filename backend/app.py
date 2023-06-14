@@ -3,6 +3,9 @@ import os
 from flask import Flask, render_template_string
 from flask_security import Security, current_user, auth_required, hash_password, \
      SQLAlchemySessionUserDatastore
+from sqlalchemy import select
+from decorators import auth_required_socket
+from models.swim import Event, Heat, Meet, Start
 from database import init_db, db_session
 from models.user import User, Role
 from passlib.totp import generate_secret
@@ -57,14 +60,15 @@ def data():
     return "secret data"
 
 class SecretNamespace(Namespace):
+    @auth_required_socket()
     def on_connect(self):
         print("connected!")
-        pass
-
+    
     def on_disconnect(self):
         print("disconnected!")
         pass
-
+    
+    @auth_required_socket()
     def on_my_event(self, data):
         print("my_event", data)
         emit('my_response', {"data": "server response"})
@@ -77,7 +81,32 @@ with app.app_context():
     init_db()
     if not app.security.datastore.find_user(email="test@me.com"):
         app.security.datastore.create_user(email="test@me.com", password=hash_password("password"))
-    db_session.commit()
+    
+        meet = Meet(name="Test Meet", current_start=0)
+        db_session.add(meet)
+
+        for start_number in range(0, 10):
+            start_query = Start(number=start_number, meet=meet)
+            db_session.add(start_query)
+
+        db_session.flush()
+        # Create events and heats
+        for event_number in range(1, 6):
+            event = Event(number=event_number, meet=meet)
+            db_session.add(event)
+
+            for heat_number in range(1, 3):
+                start_num = (event_number-1) * 2 + (heat_number - 1)
+                if start_num == 2:
+                    start_num = 1
+                if start_num == 5:
+                    start_num = 4
+                start_query = select(Start).filter_by(number=start_num)
+                start = db_session.execute(start_query).scalar_one()
+                heat = Heat(number=heat_number, start=start, event=event)
+                db_session.add(heat)
+    
+        db_session.commit()
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

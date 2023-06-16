@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { 
     AppBar,
     Box,
+    Button,
     Container, 
     Paper,
     Accordion,
@@ -17,6 +18,7 @@ import {
 import { ExpandMore, KeyboardArrowUp } from '@mui/icons-material';
 import styled from '@emotion/styled';
 import { useTheme } from '@mui/material/styles';
+import { DefaultApiFactory } from './api';
 
 const FillerBox = styled(Box)(({ theme }) => ({
         backgroundColor: theme.palette.primary.main,
@@ -128,6 +130,12 @@ const RaceCardContent = (props) => {
     )
 }
 
+const pullMeetData = () => {
+    DefaultApiFactory().getMeet('1').then((response) => {
+        console.log(response)
+    })
+}
+
 export default function Cruiser(props) {
     const theme = useTheme()
     return (
@@ -136,9 +144,9 @@ export default function Cruiser(props) {
             <ElevationScroll {...props}>
                 <AppBar>
                     <Toolbar>
-                        <Typography width='100%' align='center' variant="h5" component="div">
+                        <Button onClick={pullMeetData} width='100%' align='center' variant="h5" component="div">
                             Meet Cruiser
-                        </Typography>
+                        </Button>
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>

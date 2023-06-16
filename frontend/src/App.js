@@ -18,7 +18,8 @@ import {
 import { ExpandMore, KeyboardArrowUp } from '@mui/icons-material';
 import styled from '@emotion/styled';
 import { useTheme } from '@mui/material/styles';
-import { DefaultApiFactory } from './api';
+import { DefaultApi, DefaultApiFactory } from './api';
+import axios from 'axios';
 
 const FillerBox = styled(Box)(({ theme }) => ({
         backgroundColor: theme.palette.primary.main,
@@ -131,8 +132,9 @@ const RaceCardContent = (props) => {
 }
 
 const pullMeetData = () => {
-    DefaultApiFactory().getMeet('1').then((response) => {
-        console.log(response)
+    const api = new DefaultApi(null, 'http://localhost:5000', axios);
+    api.meetMeetIdGet(1).then((response) => {
+        console.log(response.data);
     })
 }
 

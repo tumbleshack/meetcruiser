@@ -90,6 +90,7 @@ const layout = {
         },
         box: {
             height: '14em',
+
         }
     },
     nextEventHeight: '4em',
@@ -107,7 +108,27 @@ const Upcoming = (text) => {
     )
 }
 
-export default function SimpleContainer(props) {
+const SectionHeading = (props) => {
+    return (
+        <Box sx={{ marginTop: "4px", marginBottom: "4px" }} >
+            <Typography>{props.text}</Typography>
+        </Box>
+    )
+}
+
+const RaceCardContent = (props) => {
+    return (
+        <Box sx={{ minHeight: props.height, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
+            <Box sx={{ height: '1em' }} />
+            <Typography width='100%' align='center' variant='h7'>CURRENT EVENT</Typography>
+            <Typography width='100%' align='center' variant='h2'>22</Typography>
+            <Typography width='100%' align='center' variant='h7'>6 & under 25 yd Butterfly</Typography>
+            <Box sx={{ height: '2em' }} />
+        </Box>
+    )
+}
+
+export default function Cruiser(props) {
     const theme = useTheme()
     return (
         <React.Fragment>
@@ -115,8 +136,8 @@ export default function SimpleContainer(props) {
             <ElevationScroll {...props}>
                 <AppBar>
                     <Toolbar>
-                        <Typography variant="h6" component="div">
-                            Logo
+                        <Typography width='100%' align='center' variant="h5" component="div">
+                            Meet Cruiser
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -124,20 +145,20 @@ export default function SimpleContainer(props) {
             <Toolbar id="back-to-top-anchor" />
             <Container sx={{ minHeight: layout.currentEvent.height }} >
                 <Paper sx={{ height: layout.currentEvent.height }}> 
-                    <Box sx={{ height: layout.currentEvent.box.height }}>
-                    </Box>
+                    <RaceCardContent height={layout.currentEvent.box.height} >
+                    </RaceCardContent>
                     <Accordion disableGutters>
-                        <CurrentRaceAccordionSummary >Summary</CurrentRaceAccordionSummary>
+                        <CurrentRaceAccordionSummary >Details</CurrentRaceAccordionSummary>
                         <AccordionDetails >Contents</AccordionDetails>
                     </Accordion>
                 </Paper>
             </Container>
             <Container sx={{ minHeight: layout.nextEventHeight,}} >
-                <Typography>NEXT RACE RACES</Typography>
+                <SectionHeading text="NEXT RACE RACES" />
                 {Upcoming('next race details')}
             </Container>
             <Container sx={{ minHeight: layout.followingEventHeight,}} >
-                <Typography>UPCOMING RACES</Typography>
+                <SectionHeading text="UPCOMING RACES" />
                 {dummyData.map((item) => Upcoming(item))}
             </Container>
             <ScrollTop {...props}>

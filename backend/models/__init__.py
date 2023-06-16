@@ -1,4 +1,4 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, fields, auto_field
 from sqlalchemy.orm import relationship, Mapped
 from .swim import Team, UserTeamRole, Meet, team_meet_association, Event, Start, Heat
 from .user import User, Role
@@ -33,7 +33,31 @@ def configure_mappers():
 
 configure_mappers()
 
+class EventSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Event
+        include_relationships = True
+        exclude = ("created_at", "updated_at", "deleted_at")
+
+class HeatSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Heat
+        include_relationships = True
+        exclude = ("created_at", "updated_at", "deleted_at")
+        
+    event = fields.Nested(EventSchema, exclude=("heats", "meet"))
+
+class StartSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Start
+        include_relationships = True
+        exclude = ("created_at", "updated_at", "deleted_at")
+    
+    heats = fields.Nested(HeatSchema, many=True, exclude=("start",))
+
 class MeetSchema(SQLAlchemyAutoSchema):
-        class Meta:
-            model = Meet
-            exclude = ("created_at", "updated_at", "deleted_at")
+    class Meta:
+        model = Meet
+        exclude = ("created_at", "updated_at", "deleted_at")
+    
+    starts = fields.Nested(StartSchema, many=True, exclude=("meet",))

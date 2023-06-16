@@ -10,8 +10,8 @@ const theme = createTheme({
             },
             styleOverrides: {
                 root: {
-                    marginTop: '12px',
-                    marginBottom: '12px',
+                    marginTop: '16px',
+                    marginBottom: '16px',
                 }
             }
         },

@@ -143,7 +143,7 @@ export default function Cruiser(props) {
                 </AppBar>
             </ElevationScroll>
             <Toolbar id="back-to-top-anchor" />
-            <Container sx={{ minHeight: layout.currentEvent.height }} >
+            <Container sx={{ marginTop: '4px', minHeight: layout.currentEvent.height }} >
                 <Paper sx={{ height: layout.currentEvent.height }}> 
                     <RaceCardContent height={layout.currentEvent.box.height} >
                     </RaceCardContent>

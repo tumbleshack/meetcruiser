@@ -14,9 +14,13 @@ const theme = createTheme({
                     marginBottom: '12px',
                 }
             }
+        },
+        MuiAppBar: {
+            defaultProps: {
+                color: '',
+            }
         }
     },
-
     palette: {
         primary: {
             main: '#556cd6',

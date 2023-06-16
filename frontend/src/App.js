@@ -1,12 +1,12 @@
-import * as React from 'react';
+import { Fragment, cloneElement, useEffect, useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { 
     AppBar,
     Box,
-    Button,
     Fab,
     Fade,
     Toolbar,
+    Typography,
     useScrollTrigger,
 } from '@mui/material';
 import { KeyboardArrowUp } from '@mui/icons-material';
@@ -65,38 +65,43 @@ function ElevationScroll(props) {
         threshold: 0,
     });
 
-    return React.cloneElement(children, {
+    return cloneElement(children, {
         elevation: trigger ? 4 : 0,
     });
 }
 
-const pullMeetData = () => {
-    api.meetMeetIdGet(1).then((response) => {
-        console.log(response.data);
-    })
-}
-
 export default function App(props) {
     const theme = useTheme()
+
+    const [meetData, setMeetData] = useState(null)
+
+    useEffect(() => {
+        api.meetMeetIdGet(1).then((response) => {
+            setMeetData(response.data)
+        }).catch((error) => {
+            setMeetData(null)
+        })
+    }, [setMeetData])
+
     return (
-        <React.Fragment>
+        <Fragment>
             <CssBaseline />
             <ElevationScroll {...props}>
                 <AppBar>
                     <Toolbar>
-                        <Button onClick={pullMeetData} width='100%' align='center' variant="h5" component="div">
+                        <Typography width='100%' align='center' variant="h5" component="div">
                             Meet Cruiser
-                        </Button>
+                        </Typography>
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>
             <Toolbar id="back-to-top-anchor" />
-            <Cruiser />
+            <Cruiser meetData={meetData} />
             <ScrollTop {...props}>
                 <Fab size="small" aria-label="scroll back to top">
                     <KeyboardArrowUp />
                 </Fab>
             </ScrollTop>
-        </React.Fragment>
+        </Fragment>
     );
 }

@@ -1,3 +1,4 @@
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy.orm import relationship, Mapped
 from .swim import Team, UserTeamRole, Meet, team_meet_association, Event, Start, Heat
 from .user import User, Role
@@ -31,3 +32,8 @@ def configure_mappers():
     Event.heats: Mapped[List[Heat]] = relationship(Heat, back_populates="event")
 
 configure_mappers()
+
+class MeetSchema(SQLAlchemyAutoSchema):
+        class Meta:
+            model = Meet
+            exclude = ("created_at", "updated_at", "deleted_at")

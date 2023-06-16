@@ -4,6 +4,7 @@ from flask import Flask, render_template_string
 from flask_security import Security, current_user, auth_required, hash_password, \
      SQLAlchemySessionUserDatastore
 from sqlalchemy import select
+from models import MeetSchema
 from decorators import auth_required_socket
 from models.swim import Event, Heat, Meet, Start
 from database import init_db, db_session
@@ -58,6 +59,12 @@ def home():
 @auth_required()
 def data():
     return "secret data"
+
+@app.get("/meet/<int:meet_id>")
+@app.output(MeetSchema)
+def get_meet(meet_id):
+    meet_db = db_session.execute(select(Meet).filter_by(id=meet_id)).scalar_one()
+    return MeetSchema().dump(meet_db)
 
 class SecretNamespace(Namespace):
     @auth_required_socket()

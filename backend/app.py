@@ -6,7 +6,7 @@ from flask_security import Security, current_user, auth_required, hash_password,
 from sqlalchemy import select
 from models import MeetSchema
 from decorators import auth_required_socket
-from models.swim import Event, Heat, Meet, Start
+from models.swim import Event, Heat, Meet, Start, Strokes, Relay, Sex, Unit
 from database import init_db, db_session
 from models.user import User, Role
 from passlib.totp import generate_secret
@@ -99,7 +99,17 @@ with app.app_context():
         db_session.flush()
         # Create events and heats
         for event_number in range(1, 6):
-            event = Event(number=event_number, meet=meet)
+            event = Event(
+                number=event_number, 
+                sex=Sex.male,
+                min_age=9,
+                max_age=10,
+                stroke=Strokes.freestyle,
+                relay=Relay.individual,
+                distance=50,
+                unit=Unit.yards,
+                meet=meet,
+            )
             db_session.add(event)
 
             for heat_number in range(1, 3):

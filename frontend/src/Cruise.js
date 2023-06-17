@@ -2,12 +2,15 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
+    Alert,
+    AlertTitle,
     Box,
     Container,
     Paper,
+    Skeleton,
     Typography,
 } from '@mui/material';
-import { ExpandMore, KeyboardArrowUp } from '@mui/icons-material';
+import { ExpandMore } from '@mui/icons-material';
 import styled from '@emotion/styled';
 
 const layout = {
@@ -66,26 +69,56 @@ const RaceCardContent = (props) => {
 }
 
 export default function Cruisers(props) {
-    return (
-        <>
-            <Container sx={{ marginTop: '4px', minHeight: layout.currentEvent.height }} >
-                <Paper sx={{ height: layout.currentEvent.height }}> 
-                    <RaceCardContent height={layout.currentEvent.box.height} >
-                    </RaceCardContent>
-                    <Accordion disableGutters>
-                        <CurrentRaceAccordionSummary >Details</CurrentRaceAccordionSummary>
-                        <AccordionDetails >Contents</AccordionDetails>
-                    </Accordion>
-                </Paper>
-            </Container>
-            <Container sx={{ minHeight: layout.nextEventHeight,}} >
-                <SectionHeading text="NEXT RACE RACES" />
-                {Upcoming('next race details')}
-            </Container>
-            <Container sx={{ minHeight: layout.followingEventHeight,}} >
-                <SectionHeading text="UPCOMING RACES" />
-                {dummyData.map((item) => Upcoming(item))}
-            </Container>
-        </>
-    )
+
+    if (!props.meetData && !props.pullAttempted) {
+        return (
+            <>
+                <Container sx={{ marginTop: '4px', height: layout.currentEvent.minHeight }} >
+                    <Skeleton variant="rounded" width="100%" height="100%" />
+                </Container>
+                <Container sx={{ height: layout.nextEventHeight}} >
+                    <Skeleton variant="rounded" width="100%" height="100%" />
+                </Container>
+                <Container sx={{ marginTop: '40px', height: layout.nextEventHeight}} >
+                    <Skeleton variant="rounded" width="100%" height="100%" />
+                </Container>
+                <Container sx={{ height: layout.nextEventHeight}} >
+                    <Skeleton variant="rounded" width="100%" height="100%" />
+                </Container>
+                <Container sx={{ height: layout.nextEventHeight}} >
+                    <Skeleton variant="rounded" width="100%" height="100%" />
+                </Container>
+            </>
+        )
+    }  else if (props.meetData) {
+        return (
+            <>
+                <Container sx={{ marginTop: '4px', minHeight: layout.currentEvent.minHeight }} >
+                    <Paper sx={{ height: layout.currentEvent.height }}> 
+                        <RaceCardContent height={layout.currentEvent.box.height} >
+                        </RaceCardContent>
+                        <Accordion disableGutters>
+                            <CurrentRaceAccordionSummary >Details</CurrentRaceAccordionSummary>
+                            <AccordionDetails >Contents</AccordionDetails>
+                        </Accordion>
+                    </Paper>
+                </Container>
+                <Container sx={{ minHeight: layout.nextEventHeight,}} >
+                    <SectionHeading text="NEXT RACE RACES" />
+                    {Upcoming('next race details')}
+                </Container>
+                <Container sx={{ minHeight: layout.followingEventHeight,}} >
+                    <SectionHeading text="UPCOMING RACES" />
+                    {dummyData.map((item) => Upcoming(item))}
+                </Container>
+            </>
+        ) 
+    } else {
+        return (
+            <Alert sx={{ width:"100%" }} severity="error">
+                <AlertTitle>Error</AlertTitle>
+                Failed to fetch meet data. <a href="mailto:kedronhillscruisers@gmail.com"><strong>Report this incident.</strong></a>
+            </Alert>
+        )
+    }
 }

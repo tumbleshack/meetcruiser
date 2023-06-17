@@ -1,8 +1,9 @@
 from .utils import TimestampMixin
 from database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, ForeignKey, Column, Table
+from sqlalchemy import Integer, String, Float, ForeignKey, Column, Table, Enum
 from typing import Optional
+import enum
 
 team_meet_association = Table(
     "team_meet_table",
@@ -10,6 +11,26 @@ team_meet_association = Table(
     Column("team_id", ForeignKey("team_table.id"), primary_key=True),
     Column("meet_id", ForeignKey("meet_table.id"), primary_key=True),
 )
+
+class Strokes(enum.Enum):
+    freestyle = "freestyle"
+    backstroke = "backstroke"
+    breaststroke = "breaststroke"
+    butterfly = "butterfly"
+    medley = "medley"
+
+class Relay(enum.Enum):
+    relay = "relay"
+    individual = "individual"
+
+class Sex(enum.Enum):
+    male = "male"
+    female = "female"
+    both = "both"
+
+class Unit(enum.Enum):
+    meters = "meters"
+    yards = "yards"
 
 class Team(Base, TimestampMixin):
     __tablename__ = 'team_table'
@@ -43,6 +64,13 @@ class Event(Base, TimestampMixin):
     __tablename__ = 'event_table'
     id = mapped_column(Integer, primary_key=True)
     number = mapped_column(Integer, nullable=False)
+    sex = mapped_column(Enum(Sex), nullable=False)
+    min_age = mapped_column(Float, nullable=False)
+    max_age = mapped_column(Float, nullable=False)
+    stroke = mapped_column(Enum(Strokes), nullable=False)
+    relay = mapped_column(Enum(Relay), nullable=False)
+    distance = mapped_column(Float, nullable=False)
+    unit = mapped_column(Enum(Unit), nullable=False)
     # Although techincally redunant, Meet ID is non-nullable to ensure each entry is uniquely associated with a meet
     meet_id: Mapped[int] = mapped_column(ForeignKey("meet_table.id"), nullable=False)
 

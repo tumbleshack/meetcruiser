@@ -1,6 +1,5 @@
-from marshmallow_sqlalchemy import ModelConversionError, SQLAlchemyAutoSchema
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import scoped_session, sessionmaker, mapper
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from urllib.parse import urlparse
 import importlib

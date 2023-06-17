@@ -5,11 +5,11 @@
       "lib": ["es2019"],
     //   "declaration": true,
       "outDir": "./src/api",
-      "rootDir": "./src/import/api",
+      "rootDir": "./tmp/api",
       "esModuleInterop": true,
       "strict": true,
       "moduleResolution": "node",
     },
-    "include": ["./src/import/api/**/*"],
+    "include": ["./tmp/api/**/*"],
     "exclude": ["node_modules"]
   }

@@ -92,15 +92,63 @@
       "Event": {
         "type": "object",
         "properties": {
+          "distance": {
+            "type": "number"
+          },
+          "sex": {
+            "enum": [
+              "male",
+              "female",
+              "both"
+            ],
+            "maxLength": 6
+          },
+          "relay": {
+            "enum": [
+              "relay",
+              "individual"
+            ],
+            "maxLength": 10
+          },
           "id": {
             "type": "integer"
           },
           "number": {
             "type": "integer"
+          },
+          "unit": {
+            "enum": [
+              "meters",
+              "yards"
+            ],
+            "maxLength": 6
+          },
+          "min_age": {
+            "type": "number"
+          },
+          "stroke": {
+            "enum": [
+              "freestyle",
+              "backstroke",
+              "breaststroke",
+              "butterfly",
+              "medley"
+            ],
+            "maxLength": 12
+          },
+          "max_age": {
+            "type": "number"
           }
         },
         "required": [
-          "number"
+          "distance",
+          "max_age",
+          "min_age",
+          "number",
+          "relay",
+          "sex",
+          "stroke",
+          "unit"
         ]
       },
       "Heat": {
@@ -109,11 +157,11 @@
           "id": {
             "type": "integer"
           },
-          "event": {
-            "$ref": "#/components/schemas/Event"
-          },
           "number": {
             "type": "integer"
+          },
+          "event": {
+            "$ref": "#/components/schemas/Event"
           }
         },
         "required": [
@@ -123,17 +171,17 @@
       "Start": {
         "type": "object",
         "properties": {
-          "heats": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Heat"
-            }
-          },
           "id": {
             "type": "integer"
           },
           "number": {
             "type": "integer"
+          },
+          "heats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Heat"
+            }
           }
         },
         "required": [
@@ -143,25 +191,25 @@
       "Meet": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer"
-          },
           "starts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Start"
             }
           },
-          "description": {
+          "name": {
             "type": "string",
-            "nullable": true,
             "maxLength": 255
           },
           "current_start": {
             "type": "integer"
           },
-          "name": {
+          "id": {
+            "type": "integer"
+          },
+          "description": {
             "type": "string",
+            "nullable": true,
             "maxLength": 255
           }
         },

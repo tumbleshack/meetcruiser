@@ -17,6 +17,26 @@ import globalAxios from 'axios';
 import { DUMMY_BASE_URL, assertParamExists, setSearchParams, toPathString, createRequestFunction } from './common';
 // @ts-ignore
 import { BASE_PATH, BaseAPI } from './base';
+export const EventSexEnum = {
+    Male: 'male',
+    Female: 'female',
+    Both: 'both'
+};
+export const EventRelayEnum = {
+    Relay: 'relay',
+    Individual: 'individual'
+};
+export const EventUnitEnum = {
+    Meters: 'meters',
+    Yards: 'yards'
+};
+export const EventStrokeEnum = {
+    Freestyle: 'freestyle',
+    Backstroke: 'backstroke',
+    Breaststroke: 'breaststroke',
+    Butterfly: 'butterfly',
+    Medley: 'medley'
+};
 /**
  * DefaultApi - axios parameter creator
  * @export

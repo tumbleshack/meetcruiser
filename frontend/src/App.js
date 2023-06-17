@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { 
     AppBar,
     Box,
+    Container,
     Fab,
     Fade,
     Toolbar,
@@ -74,14 +75,21 @@ export default function App(props) {
     const theme = useTheme()
 
     const [meetData, setMeetData] = useState(null)
+    const [pullAttempted, setPullAttempted] = useState(false)
 
     useEffect(() => {
-        api.meetMeetIdGet(1).then((response) => {
-            setMeetData(response.data)
-        }).catch((error) => {
-            setMeetData(null)
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        sleep(2000).then(() => {
+            api.meetMeetIdGet(1).then((response) => {
+                setMeetData(response.data)
+                setPullAttempted(true)
+            }).catch((error) => {
+                setMeetData(null)
+                setPullAttempted(true)
+            })
         })
-    }, [setMeetData])
+    }, [setMeetData, setPullAttempted])
 
     return (
         <Fragment>
@@ -96,7 +104,9 @@ export default function App(props) {
                 </AppBar>
             </ElevationScroll>
             <Toolbar id="back-to-top-anchor" />
-            <Cruiser meetData={meetData} />
+            <Container>
+                <Cruiser meetData={meetData} pullAttempted={pullAttempted} />
+            </Container>
             <ScrollTop {...props}>
                 <Fab size="small" aria-label="scroll back to top">
                     <KeyboardArrowUp />

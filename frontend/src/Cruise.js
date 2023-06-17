@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import styled from '@emotion/styled';
+import { getStrokeCombinedText } from './utils'
 
 const layout = {
     logoHeight: '4em',
@@ -45,11 +46,11 @@ const SectionHeading = (props) => {
     )
 }
 
-const Upcoming = (text) => {
+const Upcoming = (props) => {
     return (
         <Accordion>
-            <AccordionSummary expandIcon={<ExpandMore />}>{text}</AccordionSummary>
-            <AccordionDetails >Contents</AccordionDetails>
+            <AccordionSummary expandIcon={<ExpandMore />}>{props.text}</AccordionSummary>
+            <AccordionDetails>Contents</AccordionDetails>
         </Accordion>
     )
 }
@@ -69,7 +70,6 @@ const RaceCardContent = (props) => {
 }
 
 export default function Cruisers(props) {
-
     if (!props.meetData && !props.pullAttempted) {
         return (
             <>
@@ -91,6 +91,15 @@ export default function Cruisers(props) {
             </>
         )
     }  else if (props.meetData) {
+        var upcomingAccordions = [];
+
+        props.meetData.starts.forEach(start => {
+            const text = getStrokeCombinedText(true, true, false, true, start)
+            upcomingAccordions.push(
+                <Upcoming text={text} />
+            )
+        });
+
         return (
             <>
                 <Container sx={{ marginTop: '4px', minHeight: layout.currentEvent.minHeight }} >
@@ -109,7 +118,7 @@ export default function Cruisers(props) {
                 </Container>
                 <Container sx={{ minHeight: layout.followingEventHeight,}} >
                     <SectionHeading text="UPCOMING RACES" />
-                    {dummyData.map((item) => Upcoming(item))}
+                    {upcomingAccordions}
                 </Container>
             </>
         ) 

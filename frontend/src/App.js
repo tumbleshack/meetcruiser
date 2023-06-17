@@ -78,16 +78,12 @@ export default function App(props) {
     const [pullAttempted, setPullAttempted] = useState(false)
 
     useEffect(() => {
-        const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-        sleep(2000).then(() => {
-            api.meetMeetIdGet(1).then((response) => {
-                setMeetData(response.data)
-                setPullAttempted(true)
-            }).catch((error) => {
-                setMeetData(null)
-                setPullAttempted(true)
-            })
+        api.meetMeetIdGet(1).then((response) => {
+            setMeetData(response.data)
+            setPullAttempted(true)
+        }).catch((error) => {
+            setMeetData(null)
+            setPullAttempted(true)
         })
     }, [setMeetData, setPullAttempted])
 

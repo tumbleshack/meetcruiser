@@ -15,6 +15,7 @@ import styled from '@emotion/styled';
 import { useTheme } from '@mui/material/styles';
 import { api } from './connect'; 
 import Cruiser from './Cruise'
+import './styles/App.css'
 
 const FillerBox = styled(Box)(({ theme }) => ({
         backgroundColor: theme.palette.primary.main,
@@ -79,7 +80,9 @@ export default function App(props) {
 
     useEffect(() => {
         api.meetMeetIdGet(1).then((response) => {
-            setMeetData(response.data)
+            let data = response.data
+            data.starts.sort((a,b) => a.number - b.number);
+            setMeetData(data)
             setPullAttempted(true)
         }).catch((error) => {
             setMeetData(null)

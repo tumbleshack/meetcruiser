@@ -50,7 +50,7 @@ const getStrokeText = (stroke, relay, shortenName) => {
     return strokeString;
 }
 
-export const getStrokeCombinedText = (includeSex, includeAge, shortenName, includeDistance, start) => {
+export const startDescriptionText = (start, includeSex = true, includeAge = true, shortenName = true, includeDistance = true) => {
     let heats = start.heats;
     if (!heats || heats.length == 0) return "No heats";
     var ages = [];
@@ -72,7 +72,10 @@ export const getStrokeCombinedText = (includeSex, includeAge, shortenName, inclu
         if (index !== 0) buildingString += "& ";
         if (includeSex) {
             const sexesByAgeArray = Array.from(sexesByAge[age]);
-            for (let x = 0; x < sexesByAgeArray.length; x++) if (x !== 0) buildingString += ("& " + sexesByAgeArray[x] + " ");
+            for (let x = 0; x < sexesByAgeArray.length; x++) {
+                buildingString += sexesByAgeArray[x] + " ";
+                if (x !== 0) buildingString += "& ";
+            }
         }
         if (includeAge) buildingString += age + " ";
     });
@@ -81,4 +84,31 @@ export const getStrokeCombinedText = (includeSex, includeAge, shortenName, inclu
 
     buildingString += getStrokeText(heats[0].event.stroke, heats[0].event.relay, shortenName)
     return buildingString;
+}
+
+export function joinArray(array, separator) {
+    return array.reduce((p, c, idx) => {
+        if (idx === 0)
+            return [c];
+        else
+            return [...p, separator, c];
+    }, []);
+}
+
+export const startNumberText = (start) => {
+    var heats = start.heats;
+    if (!heats || heats.length == 0) return "No heats";
+    heats.sort((a,b) => a.event.number + a.number / 100000 - b.event.number + b.number / 100000);
+    let eventNumbers = heats.map((heat) => heat.event.number);
+    let heatNumbers = heats.map((heat) => heat.number)
+    var text = []
+    for (let x = 0; x < heats.length; x++) {
+        text.push(<>{String(eventNumbers[x])}<sup>{String(heatNumbers[x])}</sup></>)
+    }
+    let returnVal = joinArray(text, <>&nbsp;&&nbsp;</>)
+    return <>{returnVal}</>
+}
+
+export const bound = (min, max, val) => {
+    return Math.max(Math.min(val, max), min);
 }

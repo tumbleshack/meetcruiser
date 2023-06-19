@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import styled from '@emotion/styled';
-import { getStrokeCombinedText } from './utils'
+import { bound, startDescriptionText, startNumberText } from './utils'
 
 const layout = {
     logoHeight: '4em',
@@ -49,7 +49,12 @@ const SectionHeading = (props) => {
 const Upcoming = (props) => {
     return (
         <Accordion>
-            <AccordionSummary expandIcon={<ExpandMore />}>{props.text}</AccordionSummary>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-end' }} >
+                    <Typography variant='body2'>{props.description}</Typography>
+                    <Typography variant='body2'>{props.text}</Typography>
+                </Box>
+            </AccordionSummary>
             <AccordionDetails>Contents</AccordionDetails>
         </Accordion>
     )
@@ -58,12 +63,13 @@ const Upcoming = (props) => {
 const dummyData = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
 
 const RaceCardContent = (props) => {
+    console.log(props.start)
     return (
         <Box sx={{ minHeight: props.height, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
             <Box sx={{ height: '1em' }} />
             <Typography width='100%' align='center' variant='h7'>CURRENT EVENT</Typography>
-            <Typography width='100%' align='center' variant='h2'>22</Typography>
-            <Typography width='100%' align='center' variant='h7'>6 & under 25 yd Butterfly</Typography>
+            <Typography width='100%' align='center' variant='h2'>{startNumberText(props.start)}</Typography>
+            <Typography width='100%' align='center' variant='h7'>{startDescriptionText(props.start)}</Typography>
             <Box sx={{ height: '2em' }} />
         </Box>
     )
@@ -91,20 +97,30 @@ export default function Cruisers(props) {
             </>
         )
     }  else if (props.meetData) {
+        const nextStart = props.meetData.starts[props.meetData.current_start + 1]
+        const nextText = startNumberText(nextStart)
+        const nextDescription = startDescriptionText(nextStart)
+        let twoStartsAheadIdx = bound(0, props.meetData.current_start + 2, props.meetData.starts.length);
         var upcomingAccordions = [];
-
-        props.meetData.starts.forEach(start => {
-            const text = getStrokeCombinedText(true, true, false, true, start)
+        let upcomingStarts = props.meetData.starts.slice(twoStartsAheadIdx)
+        upcomingStarts.forEach(start => {
+            const text = startNumberText(start)
+            const description = startDescriptionText(start)
             upcomingAccordions.push(
-                <Upcoming text={text} />
+                <Upcoming text={text} description={description} />
             )
         });
+        if (upcomingStarts.length === 0) {
+            upcomingAccordions.push(
+                <Upcoming text={"None :)"} />
+            )
+        }
 
         return (
             <>
                 <Container sx={{ marginTop: '4px', minHeight: layout.currentEvent.minHeight }} >
                     <Paper sx={{ height: layout.currentEvent.height }}> 
-                        <RaceCardContent height={layout.currentEvent.box.height} >
+                        <RaceCardContent start={props.meetData.starts[props.meetData.current_start]} height={layout.currentEvent.box.height} >
                         </RaceCardContent>
                         <Accordion disableGutters>
                             <CurrentRaceAccordionSummary >Details</CurrentRaceAccordionSummary>
@@ -114,7 +130,7 @@ export default function Cruisers(props) {
                 </Container>
                 <Container sx={{ minHeight: layout.nextEventHeight,}} >
                     <SectionHeading text="NEXT RACE RACES" />
-                    {Upcoming('next race details')}
+                    <Upcoming text={nextText} description={nextDescription} />
                 </Container>
                 <Container sx={{ minHeight: layout.followingEventHeight,}} >
                     <SectionHeading text="UPCOMING RACES" />

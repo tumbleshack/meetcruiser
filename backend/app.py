@@ -6,7 +6,7 @@ from flask_security import Security, current_user, auth_required, hash_password,
 from sqlalchemy import select
 from models import MeetSchema
 from decorators import auth_required_socket
-from models.swim import Event, Heat, Meet, Start
+from models.swim import Event, Heat, Meet, Start, Strokes, Relay, Sex, Unit
 from database import init_db, db_session
 from models.user import User, Role
 from passlib.totp import generate_secret
@@ -92,22 +92,37 @@ with app.app_context():
         meet = Meet(name="Test Meet", current_start=0)
         db_session.add(meet)
 
-        for start_number in range(0, 10):
+        numStarts = 10
+        for start_number in range(0, numStarts):
             start_query = Start(number=start_number, meet=meet)
             db_session.add(start_query)
 
+        minAges = [0, 7, 9, 11, 13, 15] * 2
+        maxAges = [6, 8, 10, 12, 14, 18] * 2
+        sexes = [Sex.male, Sex.female] * 8
+        strokes = [Strokes.freestyle, Strokes.backstroke, Strokes.breaststroke, Strokes.butterfly, Strokes.medley] * 3
+        relays = [Relay.individual, Relay.individual, Relay.individual, Relay.relay] * 4
+        distances = [25, 50, 100, 200, 400] * 3
+
         db_session.flush()
         # Create events and heats
-        for event_number in range(1, 6):
-            event = Event(number=event_number, meet=meet)
+        for event_number in range(1, 12):
+            event = Event(
+                number=event_number, 
+                sex=sexes[event_number-1],
+                min_age=minAges[event_number-1],
+                max_age=maxAges[event_number-1],
+                stroke=strokes[event_number-1],
+                relay=relays[event_number-1],
+                distance=distances[event_number-1],
+                unit=Unit.yards,
+                meet=meet,
+            )
             db_session.add(event)
 
-            for heat_number in range(1, 3):
-                start_num = (event_number-1) * 2 + (heat_number - 1)
-                if start_num == 2:
-                    start_num = 1
-                if start_num == 5:
-                    start_num = 4
+            num_heats = 1
+            for heat_number in range(1, num_heats+1):
+                start_num = min((event_number-1) * num_heats + (heat_number - 1), numStarts - 1)
                 start_query = select(Start).filter_by(number=start_num)
                 start = db_session.execute(start_query).scalar_one()
                 heat = Heat(number=heat_number, start=start, event=event)

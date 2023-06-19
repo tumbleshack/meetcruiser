@@ -1,6 +1,8 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, fields, auto_field
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, fields
 from sqlalchemy.orm import relationship, Mapped
-from .swim import Team, UserTeamRole, Meet, team_meet_association, Event, Start, Heat
+
+from .utils import ExtendModelConverter
+from .swim import Relay, Team, UserTeamRole, Meet, team_meet_association, Event, Start, Heat
 from .user import User, Role
 from typing import Set, List
 
@@ -36,6 +38,7 @@ configure_mappers()
 class EventSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Event
+        model_converter = ExtendModelConverter
         include_relationships = True
         exclude = ("created_at", "updated_at", "deleted_at")
 

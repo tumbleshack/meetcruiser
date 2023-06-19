@@ -1,0 +1,222 @@
+{
+  "info": {
+    "title": "APIFlask",
+    "version": "0.1.0"
+  },
+  "tags": [],
+  "paths": {
+    "/": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Home"
+      }
+    },
+    "/secret": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "summary": "Data"
+      }
+    },
+    "/meet/{meet_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "meet_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meet"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "summary": "Get Meet"
+      }
+    }
+  },
+  "openapi": "3.0.3",
+  "components": {
+    "schemas": {
+      "HTTPError": {
+        "properties": {
+          "detail": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "distance": {
+            "type": "number"
+          },
+          "sex": {
+            "enum": [
+              "male",
+              "female",
+              "both"
+            ],
+            "maxLength": 6
+          },
+          "relay": {
+            "enum": [
+              "relay",
+              "individual"
+            ],
+            "maxLength": 10
+          },
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "unit": {
+            "enum": [
+              "meters",
+              "yards"
+            ],
+            "maxLength": 6
+          },
+          "min_age": {
+            "type": "number"
+          },
+          "stroke": {
+            "enum": [
+              "freestyle",
+              "backstroke",
+              "breaststroke",
+              "butterfly",
+              "medley"
+            ],
+            "maxLength": 12
+          },
+          "max_age": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "distance",
+          "max_age",
+          "min_age",
+          "number",
+          "relay",
+          "sex",
+          "stroke",
+          "unit"
+        ]
+      },
+      "Heat": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "event": {
+            "$ref": "#/components/schemas/Event"
+          }
+        },
+        "required": [
+          "number"
+        ]
+      },
+      "Start": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "heats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Heat"
+            }
+          }
+        },
+        "required": [
+          "number"
+        ]
+      },
+      "Meet": {
+        "type": "object",
+        "properties": {
+          "starts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Start"
+            }
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "current_start": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    }
+  }
+}

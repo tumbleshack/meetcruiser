@@ -80,6 +80,7 @@ heatSheet=sys.argv[1]
 output=heatSheet.replace("pdf","json.txt")
 pdf = fitz.open(heatSheet)
 
+mode=""
 for page_index in range(pdf.page_count):
     print(" ====================================================== page: ", page_index)
     page = pdf[page_index]
@@ -94,17 +95,24 @@ for page_index in range(pdf.page_count):
 
         if block_lines == 1:
             if text_values[0].startswith('#'):
+                mode="event"
                 print("Event        >", text_values[0])
             elif text_values[0].startswith('Heat'):
+                mode="heat "
                 print("Heat           >", text_values[0])
+            elif mode == "membr" or mode == "entry":
+                print("Relay Swim  !1",mode,">", text_values)
             else:
-                print("other 1        >", text_values[0] )
+                print("other 1    ",mode,">", text_values )
+
         elif block_lines == 4:
-            print("Indv/Team        >", text_values)
+            mode="entry"
+            print("Indv/Team   ",mode,">", text_values)
         elif block_lines == 2:
-            print("Relay Swim         >", text_values)
+            mode="membr"
+            print("Relay Swim    ",mode,">", text_values)
         else:
-            print("other:          >",block_lines,text_values)
+            print("other:      ",mode,">",block_lines,text_values)
 
         continue
 

@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/Users/Brandon/Documents/meetcruiser/venv/bin/python3
 
 import re
 import sys
@@ -6,12 +6,13 @@ import json
 import codecs
 import fitz  # http://pymupdf.readthedocs.io/en/latest/
 
-from EventHeat import *
-from Meet import *
+#from EventHeat import *
+#from Meet import *
 
 #import firebase_admin
 #from firebase_admin import credentials, firestore
 
+"""
 def fixtime(time):
     it = iter(time)
     newtime=""
@@ -41,7 +42,6 @@ def utfy_dict(dic):
         return(dic)
 
 def serialize(obj):
-    """JSON serializer for objects not serializable by default json code"""
 
     if isinstance(obj, date):
         serial = obj.isoformat()
@@ -74,13 +74,13 @@ startNo=0
 lane=0
 prevLane=0
 
+"""
+
 heatSheet=sys.argv[1]
 output=heatSheet.replace("pdf","json.txt")
-
-
 pdf = fitz.open(heatSheet)
 
-for page_index in range(pdf.pageCount):
+for page_index in range(pdf.page_count):
     print(" ====================================================== page: ", page_index)
     page = pdf[page_index]
     heatSheetData = page.get_text('dict')
@@ -97,6 +97,8 @@ for page_index in range(pdf.pageCount):
                 print("Event        >", text_values[0])
             elif text_values[0].startswith('Heat'):
                 print("Heat           >", text_values[0])
+            else:
+                print("other 1        >", text_values[0] )
         elif block_lines == 4:
             print("Indv/Team        >", text_values)
         elif block_lines == 2:
@@ -106,6 +108,7 @@ for page_index in range(pdf.pageCount):
 
         continue
 
+"""
         try:
             print(block['lines'][2]['spans'][0]['text'])
             #if 'Jabbar' in block['lines'][2]['spans'][0]['text']:
@@ -439,3 +442,5 @@ print(" ")
 #db.collection(u'swim_test').document(u'whitewater').set(myjson)
 #!/usr/local/bin/python3
 
+
+"""

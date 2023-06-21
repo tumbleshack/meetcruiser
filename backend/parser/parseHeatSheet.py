@@ -82,7 +82,7 @@ pdf = fitz.open(heatSheet)
 
 mode=""
 for page_index in range(pdf.page_count):
-    print(" ====================================================== page: ", page_index)
+    print("---")
     page = pdf[page_index]
     heatSheetData = page.get_text('dict')
 
@@ -101,16 +101,44 @@ for page_index in range(pdf.page_count):
                 mode="heat "
                 print("Heat           >", text_values[0])
             elif mode == "membr" or mode == "entry":
-                print("Relay Swim  !1",mode,">", text_values)
+                print("Relay Swim1  !1",mode,">", text_values)
             else:
                 print("other 1    ",mode,">", text_values )
 
         elif block_lines == 4:
             mode="entry"
-            print("Indv/Team   ",mode,">", text_values)
+            print("Indv/Team1   ",mode,">", text_values)
         elif block_lines == 2:
-            mode="membr"
-            print("Relay Swim    ",mode,">", text_values)
+            if "aestro" in text_values[0]:
+                mode="trademark"
+            elif re.match(r"\d+ of \d+",text_values[0]):
+                mode="page"
+            elif "(" in text_values[0]:
+                mode="membr"
+                print("Relay Swim2    ",mode,">", text_values)
+            else:
+                mode="split"
+                prev = text_values
+        elif block_lines == 3:
+            if text_values[0] == "Heat Sheet":
+                mode="meet"
+            elif text_values[0].startswith("SwimTopia"):
+                mode="swimtopia"
+            elif re.match( r"\d+\)", text_values[0] ):
+                mode="membr"
+                print("Relay Swim3    ",mode,">", [re.split(r"(\d\))",text_values[0]), text_values[1],text_values[2]])
+            elif re.match(r"\d+\.\d+",text_values[2]) or "NT" in text_values[2]:
+                mode="entry"
+                new=[prev[0],prev[1]+text_values[0],text_values[1],text_values[2]]
+                print("Indv/Team2   ",mode,">", new)
+            else:
+                print("other 3    ",mode,">", text_values )
+        elif block_lines == 5:
+            mode="heat "
+            print("Heat           >", text_values[0])
+            text_values.pop(0)
+            mode="entry"
+            print("Indv/Team3   ",mode,">", text_values)
         else:
             print("other:      ",mode,">",block_lines,text_values)
 

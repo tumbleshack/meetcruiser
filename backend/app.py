@@ -14,6 +14,7 @@ from apiflask import APIFlask  # step one
 from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
 from flask_socketio import SocketIO, Namespace, emit
+from api import api_blueprint
 
 # Create app
 app = APIFlask(__name__, instance_relative_config=True)
@@ -48,23 +49,6 @@ if (app.config['CORS_ORIGINS']):
 # Setup Flask-Security
 user_datastore = SQLAlchemySessionUserDatastore(db_session, User, Role)
 app.security = Security(app, user_datastore)
-
-# Views
-@app.route("/")
-@auth_required()
-def home():
-    return render_template_string('Hello {{email}} !', email=current_user.email)
-
-@app.route("/secret")
-@auth_required()
-def data():
-    return "secret data"
-
-@app.get("/meet/<int:meet_id>")
-@app.output(MeetSchema)
-def get_meet(meet_id):
-    meet_db = db_session.execute(select(Meet).filter_by(id=meet_id)).scalar_one()
-    return MeetSchema().dump(meet_db)
 
 class SecretNamespace(Namespace):
     @auth_required_socket()
@@ -133,6 +117,8 @@ with app.app_context():
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
+
+app.register_blueprint(api_blueprint, url_prefix='/api')
 
 if __name__ == '__main__':
     # run application (can also use flask run)

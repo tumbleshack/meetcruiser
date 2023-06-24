@@ -3,9 +3,19 @@
     "title": "APIFlask",
     "version": "0.1.0"
   },
-  "tags": [],
+  "tags": [
+    {
+      "name": "Api"
+    },
+    {
+      "name": "Api.Test"
+    },
+    {
+      "name": "Api.Meet"
+    }
+  ],
   "paths": {
-    "/": {
+    "/api/test/": {
       "get": {
         "parameters": [],
         "responses": {
@@ -18,10 +28,14 @@
             "description": "Successful response"
           }
         },
-        "summary": "Home"
+        "tags": [
+          "Api.Test"
+        ],
+        "summary": "Home",
+        "operationId": "get_api_test_home"
       }
     },
-    "/secret": {
+    "/api/test/secret": {
       "get": {
         "parameters": [],
         "responses": {
@@ -34,10 +48,14 @@
             "description": "Successful response"
           }
         },
-        "summary": "Data"
+        "tags": [
+          "Api.Test"
+        ],
+        "summary": "Data",
+        "operationId": "get_api_test_data"
       }
     },
-    "/meet/{meet_id}": {
+    "/api/meet/{meet_id}": {
       "get": {
         "parameters": [
           {
@@ -71,7 +89,11 @@
             "description": "Not found"
           }
         },
-        "summary": "Get Meet"
+        "tags": [
+          "Api.Meet"
+        ],
+        "summary": "Get Meet",
+        "operationId": "get_api_meet_get_meet"
       }
     }
   },
@@ -92,9 +114,6 @@
       "Event": {
         "type": "object",
         "properties": {
-          "distance": {
-            "type": "number"
-          },
           "sex": {
             "enum": [
               "male",
@@ -103,12 +122,8 @@
             ],
             "maxLength": 6
           },
-          "relay": {
-            "enum": [
-              "relay",
-              "individual"
-            ],
-            "maxLength": 10
+          "distance": {
+            "type": "number"
           },
           "id": {
             "type": "integer"
@@ -116,15 +131,22 @@
           "number": {
             "type": "integer"
           },
+          "min_age": {
+            "type": "number"
+          },
+          "relay": {
+            "enum": [
+              "relay",
+              "individual"
+            ],
+            "maxLength": 10
+          },
           "unit": {
             "enum": [
               "meters",
               "yards"
             ],
             "maxLength": 6
-          },
-          "min_age": {
-            "type": "number"
           },
           "stroke": {
             "enum": [
@@ -154,14 +176,14 @@
       "Heat": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer"
-          },
           "number": {
             "type": "integer"
           },
           "event": {
             "$ref": "#/components/schemas/Event"
+          },
+          "id": {
+            "type": "integer"
           }
         },
         "required": [
@@ -171,9 +193,6 @@
       "Start": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer"
-          },
           "number": {
             "type": "integer"
           },
@@ -182,6 +201,9 @@
             "items": {
               "$ref": "#/components/schemas/Heat"
             }
+          },
+          "id": {
+            "type": "integer"
           }
         },
         "required": [
@@ -191,26 +213,26 @@
       "Meet": {
         "type": "object",
         "properties": {
-          "starts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Start"
-            }
+          "current_start": {
+            "type": "integer"
           },
           "name": {
             "type": "string",
             "maxLength": 255
           },
-          "current_start": {
-            "type": "integer"
-          },
-          "id": {
-            "type": "integer"
-          },
           "description": {
             "type": "string",
             "nullable": true,
             "maxLength": 255
+          },
+          "id": {
+            "type": "integer"
+          },
+          "starts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Start"
+            }
           }
         },
         "required": [

@@ -80,6 +80,4 @@ class Heat(Base, TimestampMixin):
     number = mapped_column(Integer, nullable=False)
     start_id: Mapped[int] = mapped_column(ForeignKey("start_table.id"), nullable=False)
     event_id: Mapped[int] = mapped_column(ForeignKey("event_table.id"), nullable=False)
-
-
     

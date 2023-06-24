@@ -79,7 +79,7 @@ export default function App(props) {
     const [pullAttempted, setPullAttempted] = useState(false)
 
     useEffect(() => {
-        api.meetMeetIdGet(1).then((response) => {
+        api.getApiMeetGetMeet(1).then((response) => {
             let data = response.data
             data.starts.sort((a,b) => a.number - b.number);
             setMeetData(data)

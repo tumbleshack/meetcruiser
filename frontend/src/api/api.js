@@ -38,10 +38,10 @@ export const EventStrokeEnum = {
     Medley: 'medley'
 };
 /**
- * DefaultApi - axios parameter creator
+ * ApiMeetApi - axios parameter creator
  * @export
  */
-export const DefaultApiAxiosParamCreator = function (configuration) {
+export const ApiMeetApiAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -50,10 +50,10 @@ export const DefaultApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meetMeetIdGet: async (meetId, options = {}) => {
+        getApiMeetGetMeet: async (meetId, options = {}) => {
             // verify required parameter 'meetId' is not null or undefined
-            assertParamExists('meetMeetIdGet', 'meetId', meetId);
-            const localVarPath = `/meet/{meet_id}`
+            assertParamExists('getApiMeetGetMeet', 'meetId', meetId);
+            const localVarPath = `/api/meet/{meet_id}`
                 .replace(`{${"meet_id"}}`, encodeURIComponent(String(meetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -72,64 +72,14 @@ export const DefaultApiAxiosParamCreator = function (configuration) {
                 options: localVarRequestOptions,
             };
         },
-        /**
-         *
-         * @summary Home
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        rootGet: async (options = {}) => {
-            const localVarPath = `/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Data
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        secretGet: async (options = {}) => {
-            const localVarPath = `/secret`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     };
 };
 /**
- * DefaultApi - functional programming interface
+ * ApiMeetApi - functional programming interface
  * @export
  */
-export const DefaultApiFp = function (configuration) {
-    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration);
+export const ApiMeetApiFp = function (configuration) {
+    const localVarAxiosParamCreator = ApiMeetApiAxiosParamCreator(configuration);
     return {
         /**
          *
@@ -138,38 +88,18 @@ export const DefaultApiFp = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async meetMeetIdGet(meetId, options) {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.meetMeetIdGet(meetId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         *
-         * @summary Home
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async rootGet(options) {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.rootGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         *
-         * @summary Data
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async secretGet(options) {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.secretGet(options);
+        async getApiMeetGetMeet(meetId, options) {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiMeetGetMeet(meetId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     };
 };
 /**
- * DefaultApi - factory interface
+ * ApiMeetApi - factory interface
  * @export
  */
-export const DefaultApiFactory = function (configuration, basePath, axios) {
-    const localVarFp = DefaultApiFp(configuration);
+export const ApiMeetApiFactory = function (configuration, basePath, axios) {
+    const localVarFp = ApiMeetApiFp(configuration);
     return {
         /**
          *
@@ -178,65 +108,169 @@ export const DefaultApiFactory = function (configuration, basePath, axios) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meetMeetIdGet(meetId, options) {
-            return localVarFp.meetMeetIdGet(meetId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         *
-         * @summary Home
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        rootGet(options) {
-            return localVarFp.rootGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         *
-         * @summary Data
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        secretGet(options) {
-            return localVarFp.secretGet(options).then((request) => request(axios, basePath));
+        getApiMeetGetMeet(meetId, options) {
+            return localVarFp.getApiMeetGetMeet(meetId, options).then((request) => request(axios, basePath));
         },
     };
 };
 /**
- * DefaultApi - object-oriented interface
+ * ApiMeetApi - object-oriented interface
  * @export
- * @class DefaultApi
+ * @class ApiMeetApi
  * @extends {BaseAPI}
  */
-export class DefaultApi extends BaseAPI {
+export class ApiMeetApi extends BaseAPI {
     /**
      *
      * @summary Get Meet
      * @param {number} meetId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof ApiMeetApi
      */
-    meetMeetIdGet(meetId, options) {
-        return DefaultApiFp(this.configuration).meetMeetIdGet(meetId, options).then((request) => request(this.axios, this.basePath));
+    getApiMeetGetMeet(meetId, options) {
+        return ApiMeetApiFp(this.configuration).getApiMeetGetMeet(meetId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+/**
+ * ApiTestApi - axios parameter creator
+ * @export
+ */
+export const ApiTestApiAxiosParamCreator = function (configuration) {
+    return {
+        /**
+         *
+         * @summary Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiTestData: async (options = {}) => {
+            const localVarPath = `/api/test/secret`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *
+         * @summary Home
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiTestHome: async (options = {}) => {
+            const localVarPath = `/api/test/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    };
+};
+/**
+ * ApiTestApi - functional programming interface
+ * @export
+ */
+export const ApiTestApiFp = function (configuration) {
+    const localVarAxiosParamCreator = ApiTestApiAxiosParamCreator(configuration);
+    return {
+        /**
+         *
+         * @summary Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApiTestData(options) {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiTestData(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         *
+         * @summary Home
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApiTestHome(options) {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiTestHome(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    };
+};
+/**
+ * ApiTestApi - factory interface
+ * @export
+ */
+export const ApiTestApiFactory = function (configuration, basePath, axios) {
+    const localVarFp = ApiTestApiFp(configuration);
+    return {
+        /**
+         *
+         * @summary Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiTestData(options) {
+            return localVarFp.getApiTestData(options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Home
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiTestHome(options) {
+            return localVarFp.getApiTestHome(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+/**
+ * ApiTestApi - object-oriented interface
+ * @export
+ * @class ApiTestApi
+ * @extends {BaseAPI}
+ */
+export class ApiTestApi extends BaseAPI {
+    /**
+     *
+     * @summary Data
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApiTestApi
+     */
+    getApiTestData(options) {
+        return ApiTestApiFp(this.configuration).getApiTestData(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
      * @summary Home
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof ApiTestApi
      */
-    rootGet(options) {
-        return DefaultApiFp(this.configuration).rootGet(options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     *
-     * @summary Data
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    secretGet(options) {
-        return DefaultApiFp(this.configuration).secretGet(options).then((request) => request(this.axios, this.basePath));
+    getApiTestHome(options) {
+        return ApiTestApiFp(this.configuration).getApiTestHome(options).then((request) => request(this.axios, this.basePath));
     }
 }

@@ -30,7 +30,7 @@ class SecretNamespace(Namespace):
         emit('my_response', {"data": "server response"})
 
 # Create app
-def create_app():
+def create_app(enable_sockets=True):
     app = APIFlask(__name__, instance_relative_config=True)
 
     # Load the default configuration
@@ -47,7 +47,6 @@ def create_app():
     # Enable CRSF protection on flask security too
     # https://flask-security-too.readthedocs.io/en/stable/patterns.html#csrf
     csrf = CSRFProtect(app)
-    socket_app = SocketIO(app, cors_allowed_origins=app.config['CORS_ORIGINS'], logger=True)
 
     # Allow request from frontend domains
     if (app.config['CORS_ORIGINS']):
@@ -64,7 +63,8 @@ def create_app():
     user_datastore = SQLAlchemySessionUserDatastore(db_session, User, Role)
     app.security = Security(app, user_datastore)
 
-    socket_app.on_namespace(SecretNamespace('/test'))
+    if (enable_sockets):
+        initialize_socket(app)
 
 # one time setup
     with app.app_context():
@@ -122,8 +122,8 @@ def create_app():
 
     return app
 
-# if __name__ == '__main__':
-#     # run application (can also use flask run)
-#     socket_app.run(app)
+def initialize_socket(app):
+    socket_app = SocketIO(app, cors_allowed_origins=app.config['CORS_ORIGINS'], logger=True)
+    socket_app.on_namespace(SecretNamespace('/test'))
+    return socket_app
 
-# app = create_app()

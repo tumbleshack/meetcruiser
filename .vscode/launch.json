@@ -13,7 +13,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "env": {
-                // "APP_RUN_CONFIG": "config.production"
+                // "APP_RUN_CONFIG": "production"
             },
         }
     ]

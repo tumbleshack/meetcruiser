@@ -6,7 +6,7 @@ import importlib
 import pathlib
 import os
 
-env_config_module = os.environ.get('APP_RUN_CONFIG', 'backend.config.development')
+env_config_module = 'backend.config.' + os.environ.get('APP_RUN_CONFIG', 'development')
 app_config = importlib.import_module('backend.config.default')
 env_config = importlib.import_module(env_config_module)
 app_config.__dict__.update(env_config.__dict__)

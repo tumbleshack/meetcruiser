@@ -28,8 +28,8 @@ SECURITY_TOTP_SECRETS = {1: "Cryptographically-secure-seed-for-MFA"}
 The backend reads configuration from the module specified by the `APP_RUN_CONFIG` environment variable. Set this variable to mirror a module in the `./backend/config` directory. I.E. one of
 
 ```
-backend.config.development
-backend.config.production
+development
+production
 ```
 
 
@@ -37,7 +37,7 @@ backend.config.production
 
 From the `./backend` directory, run
 ```
-APP_RUN_CONFIG=backend.config.{development, production} python app.py
+APP_RUN_CONFIG={development, production} python app.py
 ```
 
 ## Frontend

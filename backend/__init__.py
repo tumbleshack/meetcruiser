@@ -41,7 +41,7 @@ def create_app():
 
     # Load the file specified by the APP_RUN_CONFIG environment variable
     # Variables defined here will override those in the default configuration
-    env_config_module = os.environ.get('APP_RUN_CONFIG', '.config.development')
+    env_config_module = 'backend.config.' + os.environ.get('APP_RUN_CONFIG', 'development')
     app.config.from_object(env_config_module)
 
     # Enable CRSF protection on flask security too

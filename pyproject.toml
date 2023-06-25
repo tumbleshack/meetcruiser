@@ -1,62 +1,10 @@
 [project]
 name = "backend"
 version = "1.0.0"
-dependencies = [
-    "APIFlask",
-    "apispec",
-    "asn1crypto",
-    "Authlib",
-    "bcrypt",
-    "bidict",
-    "bleach",
-    "blinker",
-    "cbor2",
-    "cffi",
-    "click",
-    "cryptography",
-    "dnspython",
-    "email-validator",
-    "eventlet",
-    "Flask",
-    "Flask-Cors",
-    "Flask-HTTPAuth",
-    "Flask-Login",
-    "flask-mailman",
-    "flask-marshmallow",
-    "Flask-Principal",
-    "Flask-Security-Too",
-    "Flask-SocketIO",
-    "Flask-WTF",
-    "greenlet",
-    "idna",
-    "importlib-metadata",
-    "importlib-resources",
-    "itsdangerous",
-    "Jinja2",
-    "MarkupSafe",
-    "marshmallow",
-    "marshmallow-sqlalchemy",
-    "mkdocs-material-extensions",
-    "packaging",
-    "passlib",
-    "phonenumberslite",
-    "pycparser",
-    "pydantic",
-    "pyOpenSSL",
-    "pypng",
-    "python-engineio",
-    "python-socketio",
-    "qrcode",
-    "six",
-    "SQLAlchemy",
-    "typing_extensions",
-    "webargs",
-    "webauthn",
-    "webencodings",
-    "Werkzeug",
-    "WTForms",
-    "zipp"
-]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["backend/requirements.txt"]}
 
 [build-system]
 requires = ["setuptools"]

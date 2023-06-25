@@ -1,5 +1,5 @@
 from .utils import TimestampMixin
-from database import Base
+from backend.database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, Float, ForeignKey, Column, Table, Enum
 from typing import Optional

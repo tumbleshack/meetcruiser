@@ -1,5 +1,5 @@
 from .utils import TimestampMixin
-from database import Base
+from backend.database import Base
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import Boolean, DateTime, Integer, String

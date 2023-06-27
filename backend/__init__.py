@@ -49,7 +49,7 @@ def create_app(enable_sockets=True):
     csrf = CSRFProtect(app)
 
     # Allow request from frontend domains
-    if (app.config['CORS_ORIGINS']):
+    if (('CORS_ORIGINS' in app.config.keys()) and app.config['CORS_ORIGINS']):
         CORS(
             app,
             supports_credentials=True,  # needed for cross domain cookie support
@@ -123,7 +123,10 @@ def create_app(enable_sockets=True):
     return app
 
 def initialize_socket(app):
-    socket_app = SocketIO(app, cors_allowed_origins=app.config['CORS_ORIGINS'], logger=True)
+    if ('CORS_ORIGINS' in app.config.keys()):
+        socket_app = SocketIO(app, cors_allowed_origins=app.config['CORS_ORIGINS'], logger=True)
+    else:
+        socket_app = SocketIO(app, logger=True)
     socket_app.on_namespace(SecretNamespace('/test'))
     return socket_app
 

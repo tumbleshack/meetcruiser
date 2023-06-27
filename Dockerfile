@@ -1,6 +1,8 @@
 # Use the official Python base image
 FROM python:3.9
 
+RUN apk add libpq-dev
+
 # Set the working directory inside the container
 WORKDIR /app
 

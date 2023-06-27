@@ -11,8 +11,8 @@ def get_new_connection(uri):
     region = db_url.host.split('.')[2]
     dbname = db_url.database
 
-    session = boto3.Session(profile_name='default')
-    client = session.client('rds', region_name='us-east-1')
+    session = boto3.Session()
+    client = session.client('rds')
 
     token = client.generate_db_auth_token(
         DBHostname=endpoint, Port=port, DBUsername=user, Region=region

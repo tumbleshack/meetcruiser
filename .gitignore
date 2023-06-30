@@ -63,6 +63,10 @@ typings/
 # build output
 build/*
 
+# Temporary stuff
+openapitools.json
+tf/
+
 #########
 # PYTHON
 #########

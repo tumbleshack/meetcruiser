@@ -1,8 +1,10 @@
-from .utils import TimestampMixin
-from backend.database import Base
-from flask_security import UserMixin, RoleMixin
-from sqlalchemy.orm import mapped_column
+from flask_security import RoleMixin, UserMixin
 from sqlalchemy import Boolean, DateTime, Integer, String
+from sqlalchemy.orm import mapped_column
+
+from backend.database import Base
+
+from .utils import TimestampMixin
 
 
 class Role(Base, RoleMixin, TimestampMixin):

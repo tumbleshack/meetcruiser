@@ -1,7 +1,7 @@
-from sqlalchemy import DateTime, func, Enum
-from sqlalchemy.orm import mapped_column
-from marshmallow_sqlalchemy import ModelConverter, SQLAlchemyAutoSchema
 from marshmallow import fields
+from marshmallow_sqlalchemy import ModelConverter, SQLAlchemyAutoSchema
+from sqlalchemy import DateTime, Enum, func
+from sqlalchemy.orm import mapped_column
 
 
 class TimestampMixin(object):

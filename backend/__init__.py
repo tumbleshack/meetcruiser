@@ -1,23 +1,24 @@
 import os
 
 from flask import Flask, render_template_string
+from flask_cors import CORS
 from flask_security import (
     Security,
-    current_user,
-    auth_required,
-    hash_password,
     SQLAlchemySessionUserDatastore,
+    auth_required,
+    current_user,
+    hash_password,
 )
-from sqlalchemy import select
-from .decorators import auth_required_socket
-from .models.swim import Event, Heat, Meet, Start, Strokes, Relay, Sex, Unit
-from .database import init_db, db_session
-from .models.user import User, Role
+from flask_socketio import Namespace, SocketIO, emit
 from flask_wtf.csrf import CSRFProtect
-from flask_cors import CORS
-from flask_socketio import SocketIO, Namespace, emit
+from sqlalchemy import select
+
 from .api import api_blueprint
 from .app import app
+from .database import db_session, init_db
+from .decorators import auth_required_socket
+from .models.swim import Event, Heat, Meet, Relay, Sex, Start, Strokes, Unit
+from .models.user import Role, User
 
 
 class SecretNamespace(Namespace):

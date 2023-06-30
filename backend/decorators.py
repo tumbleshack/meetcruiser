@@ -1,5 +1,6 @@
-from flask_security import current_user
 import functools
+
+from flask_security import current_user
 
 
 def auth_required_socket(func=None):

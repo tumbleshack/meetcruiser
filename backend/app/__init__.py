@@ -1,5 +1,6 @@
-from apiflask import APIFlask
 import os
+
+from apiflask import APIFlask
 
 
 def load_config(app):

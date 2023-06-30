@@ -4,7 +4,8 @@ from backend.models.swim import Meet
 from sqlalchemy import select
 from backend.models import MeetSchema
 
-meet_blueprint = APIBlueprint('meet', __name__)
+meet_blueprint = APIBlueprint("meet", __name__)
+
 
 @meet_blueprint.get("/<int:meet_id>")
 @meet_blueprint.output(MeetSchema)

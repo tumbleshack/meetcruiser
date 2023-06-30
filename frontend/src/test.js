@@ -20,6 +20,14 @@ export default function Board() {
         });
     }
 
+    const ping = () => {
+        console.log("Ping clicked");
+
+        axios.get("http://localhost:5000/api/test/ping").then((response) => {
+            console.log(response.data);
+        });
+    }
+
     const loginFun = () => {
         console.log("Login clicked");
 
@@ -78,6 +86,7 @@ export default function Board() {
             <Square value="Logout" onSquareClick={logoutFun}/>
             <Square value="ConnectSocket" onSquareClick={socketConnect}/>
             <Square value="EmitSocketEvent" onSquareClick={emitEvent}/>
+            <Square value="Ping" onSquareClick={ping}/>
             <Square value="DisconnectSocket" onSquareClick={socketDisconnect}/>
         </>
     ) 

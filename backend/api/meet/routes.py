@@ -1,8 +1,9 @@
 from apiflask import APIBlueprint
-from backend.database import db_session
-from backend.models.swim import Meet
 from sqlalchemy import select
+
+from backend.database import db_session
 from backend.models import MeetSchema
+from backend.models.swim import Meet
 
 meet_blueprint = APIBlueprint("meet", __name__)
 

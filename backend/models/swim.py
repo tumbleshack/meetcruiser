@@ -1,9 +1,12 @@
-from .utils import TimestampMixin
-from backend.database import Base
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, Float, ForeignKey, Column, Table, Enum
-from typing import Optional
 import enum
+from typing import Optional
+
+from sqlalchemy import Column, Enum, Float, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from backend.database import Base
+
+from .utils import TimestampMixin
 
 team_meet_association = Table(
     "team_meet_table",

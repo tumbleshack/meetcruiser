@@ -1,11 +1,13 @@
-from sqlalchemy import create_engine, event, make_url
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from urllib.parse import parse_qs, urlparse
-from backend.app import app
 import importlib
-import pathlib
 import os
+import pathlib
+from urllib.parse import parse_qs, urlparse
+
+from sqlalchemy import create_engine, event, make_url
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+from backend.app import app
 
 app_config = app.config
 db_url = urlparse(app_config["SQLALCHEMY_DATABASE_URI"])

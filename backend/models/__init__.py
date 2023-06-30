@@ -1,19 +1,20 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, fields
-from sqlalchemy.orm import relationship, Mapped
+from typing import List, Set
 
-from .utils import ExtendModelConverter
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, fields
+from sqlalchemy.orm import Mapped, relationship
+
 from .swim import (
+    Event,
+    Heat,
+    Meet,
     Relay,
+    Start,
     Team,
     UserTeamRole,
-    Meet,
     team_meet_association,
-    Event,
-    Start,
-    Heat,
 )
-from .user import User, Role
-from typing import Set, List
+from .user import Role, User
+from .utils import ExtendModelConverter
 
 
 def configure_mappers():

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './styles/theme';
+import Board from "./test";
 
 import App from "./App";
 
@@ -12,6 +13,7 @@ root.render(
         <StrictMode>
             <CssBaseline />
             <App />
+            {/* <Board /> */}
         </StrictMode>
     </ThemeProvider>
 );

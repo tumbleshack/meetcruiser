@@ -4,14 +4,16 @@ from flask_security import UserMixin, RoleMixin
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import Boolean, DateTime, Integer, String
 
+
 class Role(Base, RoleMixin, TimestampMixin):
-    __tablename__ = 'role_table'
+    __tablename__ = "role_table"
     id = mapped_column(Integer(), primary_key=True)
     name = mapped_column(String(80), unique=True)
     description = mapped_column(String(255))
 
+
 class User(Base, UserMixin, TimestampMixin):
-    __tablename__ = 'user_table'
+    __tablename__ = "user_table"
     id = mapped_column(Integer, primary_key=True)
     email = mapped_column(String(255), unique=True)
     username = mapped_column(String(255), unique=True, nullable=True)
@@ -26,4 +28,3 @@ class User(Base, UserMixin, TimestampMixin):
     confirmed_at = mapped_column(DateTime())
     tf_primary_method = mapped_column(String(64), nullable=True)
     tf_totp_secret = mapped_column(String(255), nullable=True)
-    

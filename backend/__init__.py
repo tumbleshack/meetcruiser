@@ -8,15 +8,14 @@ from .decorators import auth_required_socket
 from .models.swim import Event, Heat, Meet, Start, Strokes, Relay, Sex, Unit
 from .database import init_db, db_session
 from .models.user import User, Role
-from passlib.totp import generate_secret
-from apiflask import APIFlask  # step one
 from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
 from flask_socketio import SocketIO, Namespace, emit
 from .api import api_blueprint
+from .app import app
 
 class SecretNamespace(Namespace):
-    @auth_required_socket()
+    # @auth_required_socket()
     def on_connect(self):
         print("connected!")
     
@@ -31,18 +30,6 @@ class SecretNamespace(Namespace):
 
 # Create app
 def create_app(enable_sockets=True):
-    app = APIFlask(__name__, instance_relative_config=True)
-
-    # Load the default configuration
-    app.config.from_object('backend.config.default')
-
-    # Load the configuration from the instance folder
-    app.config.from_object('backend.instance.config')
-
-    # Load the file specified by the APP_RUN_CONFIG environment variable
-    # Variables defined here will override those in the default configuration
-    env_config_module = 'backend.config.' + os.environ.get('APP_RUN_CONFIG', 'development')
-    app.config.from_object(env_config_module)
 
     # Enable CRSF protection on flask security too
     # https://flask-security-too.readthedocs.io/en/stable/patterns.html#csrf
@@ -64,7 +51,8 @@ def create_app(enable_sockets=True):
     app.security = Security(app, user_datastore)
 
     if (enable_sockets):
-        initialize_socket(app)
+        socket_app = initialize_socket(app)
+        socket_app.init_app(app)
 
 # one time setup
     with app.app_context():
@@ -124,9 +112,9 @@ def create_app(enable_sockets=True):
 
 def initialize_socket(app):
     if ('CORS_ORIGINS' in app.config.keys()):
-        socket_app = SocketIO(app, cors_allowed_origins=app.config['CORS_ORIGINS'], logger=True)
+        socket_app = SocketIO(app, cors_allowed_origins=app.config['CORS_ORIGINS'], logger=True, engineio_logger=True, log_output=True)
     else:
-        socket_app = SocketIO(app, logger=True)
+        socket_app = SocketIO(app, logger=True, engineio_logger=True, log_output=True)
     socket_app.on_namespace(SecretNamespace('/test'))
     return socket_app
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { socket } from './socket.js';
+import { socket } from './connect.js';
 import { useEffect } from 'react';
 
 function Square({ value, onSquareClick }) {
@@ -15,7 +15,7 @@ export default function Board() {
     const secretInfo = () => {
         console.log("Square clicked");
 
-        axios.get("http://localhost:5000/secret").then((response) => {
+        axios.get("http://localhost:5000/api/test/secret").then((response) => {
             console.log(response.data);
         });
     }
